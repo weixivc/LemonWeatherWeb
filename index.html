@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Lemon Weather</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/grayscale.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<script>
+
+// API Key  :e4a2d6a1cb0532068e03a6dbcae1d005
+function loadXMLDoc() {
+  xmlhttp = new XMLHttpRequest();
+  xmlhttp.addEventListener("load",myFunction,null);
+  var city = document.getElementById("city").value;
+  var weatherURL = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&mode=xml&appid=e4a2d6a1cb0532068e03a6dbcae1d005"
+  xmlhttp.open("GET", weatherURL, true);
+  xmlhttp.send();
+}
+
+function myFunction() {
+    var xmlDoc = xmlhttp.responseXML.getElementsByTagName("current");
+    var city = xmlDoc[0].getElementsByTagName("city")[0].getAttribute("name");
+    var temp = xmlDoc[0].getElementsByTagName("temperature")[0].getAttribute("value");
+    var con = xmlDoc[0].getElementsByTagName("weather")[0].getAttribute("value");
+    var humidity = xmlDoc[0].getElementsByTagName("humidity")[0].getAttribute("value");
+    var pressure = xmlDoc[0].getElementsByTagName("pressure")[0].getAttribute("value");
+    var wind = xmlDoc[0].getElementsByTagName("wind")[0].getElementsByTagName("speed")[0].getAttribute("name");
+    var windSpeed = xmlDoc[0].getElementsByTagName("wind")[0].getElementsByTagName("speed")[0].getAttribute("value");
+    var windDirection = xmlDoc[0].getElementsByTagName("wind")[0].getElementsByTagName("direction")[0].getAttribute("name");
+    var tempMin = xmlDoc[0].getElementsByTagName("temperature")[0].getAttribute("min");
+    var tempMax = xmlDoc[0].getElementsByTagName("temperature")[0].getAttribute("max");
+    var celcius = parseInt(temp-273.15)+"°C";
+    
+    var newHTML = city+": "+celcius+", "+con;
+    var tempText =  "Max temperature: " + tempMax + ", Min temperature: " + tempMin;
+    var humidityText = " humidity: "+humidity+ "%";
+    var pressureText = " pressure: "+pressure+ "hPa";
+    var windText = " wind: "+wind+ ", speed:"+ windSpeed + "mph, " + windDirection;
+
+    document.getElementById("details").innerHTML = newHTML;
+    document.getElementById("moreInfo").innerHTML = newHTML;
+    document.getElementById("moreInfo1").innerHTML = tempText;
+    document.getElementById("moreInfo2").innerHTML = humidityText;
+    document.getElementById("moreInfo3").innerHTML = pressureText;
+    document.getElementById("moreInfo4").innerHTML = windText;
+}
+
+
+function clearInfo() {
+    document.getElementById("city").value="";
+    document.getElementById("details").innerHTML="Weather Detail";
+}
+
+</script>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">
+                    <i class="fa fa-play-circle"></i>  <span class="light">Start</span> 
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#download">Download</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Intro Header -->
+    <header class="intro">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="brand-heading">Lemon Weather</h1>
+                        <p style="color:white; text-shadow: 2px 2px #aaaaaa;" >Enter City:</p>
+                        <input type="text" class="search-query mac-style" placeholder="Search" id="city" style="color:black">
+                                
+                        <input type="button" value="Get Weather" class="btn-header" onclick="loadXMLDoc();"/>
+                        <input type="button" value="Clear info" class="btn-header" onclick="clearInfo();"/>
+                        <div class="text-back">
+                            <p id="details">Weather Detail</p>
+                        </div>
+
+                        <p style="color:white; text-shadow: 2px 2px #aaaaaa;">Click for more info</p>
+                        <a href="#about" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <p id="moreInfo" style="color:white">Weather Information</p>
+                <img src="lemonIcons/lemonMaxMin.png"  alt="lemon wind" width="150"><p id="moreInfo1" style="color:white"></p>
+                <img src="lemonIcons/lemonHumidity.png"  alt="lemon wind" width="150"><p id="moreInfo2" style="color:white"></p>
+                <img src="lemonIcons/lemonPressure.png"  alt="lemon wind" width="150"><p id="moreInfo3" style="color:white"></p>
+                <img src="lemonIcons/lemonWind.png"  alt="lemon wind" width="150"><p id="moreInfo4" style="color:white"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="content-section text-center">
+        <div class="download-section">
+            <div class="container">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <h2>Download </h2>
+                    <p>You can download app for free on the preview page at .</p>
+                    <a href="http://startbootstrap.com/template-overviews/grayscale/" class="btn btn-default btn-lg">Visit Download Page</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <h2>Contact </h2>
+                <p>Feel free to email us to provide some feedback on our templates, give us suggestions , or to just say hello!</p>
+                
+                <ul class="list-inline banner-social-buttons">
+                    <li>
+                        <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://plus.google.com/+Startbootstrap/posts" class="btn btn-default btn-lg"><i class="fa fa-google-plus fa-fw"></i> <span class="network-name">Google+</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <div id="map"></div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>Copyright &copy; Your Website 2014</p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+
+    <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/grayscale.js"></script>
+
+</body>
+
+</html>
