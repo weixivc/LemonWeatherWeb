@@ -36,6 +36,7 @@
 function loadXMLDoc() {
   xmlhttp = new XMLHttpRequest();
   xmlhttp.addEventListener("load",myFunction,null);
+  var city = document.getElementById("city").value;
   var weatherURL = "http://api.openweathermap.org/data/2.5/weather?q="+city+"&mode=xml&appid=e4a2d6a1cb0532068e03a6dbcae1d005"
   xmlhttp.open("GET", weatherURL, true);
   xmlhttp.send();
